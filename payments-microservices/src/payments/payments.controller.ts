@@ -8,10 +8,10 @@ export class PaymentsMicroservicesController {
     constructor(@Inject("NATS_SERVICE") private natsClient: ClientProxy, private paymentsService: PaymentsService) { }
     @EventPattern('createPayment')
     async createPayment(@Payload() createPaymentDto: CreatePaymentDto) {
-        console.log(createPaymentDto)
+        console.log("Data from http gate way api to payment service: ", createPaymentDto)
         const newPayment = await this.paymentsService.createPayment(createPaymentDto)
         if (newPayment) {
-            await this.natsClient.emit('paymentCreated', newPayment)
+            await this.natsClient.send({ cmd: 'paymentCreated' }, newPayment)
         }
     }
 }

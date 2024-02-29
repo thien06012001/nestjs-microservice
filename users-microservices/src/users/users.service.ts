@@ -18,7 +18,6 @@ export class UsersService {
             },
             relations: ['payments']
         })
-        console.log('user', user)
         if (user) { return user }
         return null
     }

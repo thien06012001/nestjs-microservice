@@ -1,5 +1,5 @@
 import { Controller } from "@nestjs/common";
-import { EventPattern, MessagePattern, Payload } from "@nestjs/microservices";
+import { MessagePattern, Payload } from "@nestjs/microservices";
 import { CreateUserDto } from "./dtos/createUser.dto";
 import { UsersService } from "./users.service";
 
@@ -14,11 +14,12 @@ export class UsersMicroservicesController {
     }
 
     @MessagePattern({ cmd: 'getUserById' })
-    getUserById(@Payload() data) {
+    async getUserById(@Payload() data) {
         const { userId } = data
-        return this.usersService.getUserById(userId)
+        console.log("UserId sent from payment service: ", userId)
+        return await this.usersService.getUserById(userId)
     }
-    @EventPattern('paymentCreated')
+    @MessagePattern('paymentCreated')
     paymentCreated(@Payload() data: any) {
         console.log(data)
     }

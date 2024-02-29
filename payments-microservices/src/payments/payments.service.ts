@@ -11,7 +11,7 @@ export class PaymentsService {
     constructor(@InjectRepository(Payment) private paymentRepository: Repository<Payment>, @Inject("NATS_SERVICE") private natsClient: ClientProxy) { }
     async createPayment({ userId, ...createPaymentDto }: CreatePaymentDto) {
         const user = await lastValueFrom<User>(this.natsClient.send({ cmd: 'getUserById' }, { userId }))
-
+        console.log("User data sent back from user service: ", user)
         if (user) {
             const newPayment = this.paymentRepository.create({ ...createPaymentDto, user })
             console.log(newPayment)
