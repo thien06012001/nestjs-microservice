@@ -22,5 +22,6 @@ export class UsersMicroservicesController {
     @MessagePattern('paymentCreated')
     paymentCreated(@Payload() data: any) {
         console.log(data)
+        return data
     }
 }

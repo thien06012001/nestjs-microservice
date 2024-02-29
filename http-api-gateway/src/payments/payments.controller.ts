@@ -7,9 +7,9 @@ import { CreatePaymentDto } from "./dtos/createPayment.dto";
 export class PaymentsController {
     constructor(@Inject('NATS_SERVICE') private natsClient: ClientProxy) { }
     @Post()
-    createPayment(@Body() createPaymentDto: CreatePaymentDto) {
+    async createPayment(@Body() createPaymentDto: CreatePaymentDto) {
         console.log('Data send from user: ', createPaymentDto)
-        this.natsClient.emit('createPayment', createPaymentDto)
+        return await this.natsClient.send({ cmd: 'createPayment' }, createPaymentDto)
     }
 
 }
